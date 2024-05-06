@@ -11,16 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: '14'
+        node-version: '20'
         
-    - name: Install curl
-      run: sudo apt-get install curl -y
-  
     - name: Install dependencies
       run: npm install
   
@@ -30,15 +27,8 @@ jobs:
     - name: Start API server
       run: |
         npm start &
-        sleep 3  # Wait for server to start
-        curl http://localhost:3000  # Check if server responds
-    
-  
-    - name: Wait for server to start
-      run: sleep 5
+        sleep 3
+        curl http://localhost:3000
   
     - name: Run API tests
       run: ./test.sh
-  
-    - name: Stop API server
-      run: kill $(lsof -t -i:3000) || true
